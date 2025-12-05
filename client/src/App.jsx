@@ -15,7 +15,6 @@ function App() {
   const [playerIndex, setPlayerIndex] = useState(-1);
   const [error, setError] = useState("");
   const [gameResult, setGameResult] = useState(null);
-  const [showStopConfirm, setShowStopConfirm] = useState(false);
 
   useEffect(() => {
     connectSocket();
@@ -56,6 +55,15 @@ function App() {
 
     // Turn changed
     socket.on("turn_changed", ({ currentTurn, timer }) => {
+      // Clear invalid cell from previous turn
+      if (lastInvalidCell) {
+        setBoard((prevBoard) => {
+          const newBoard = prevBoard.map((row) => [...row]);
+          newBoard[lastInvalidCell.row][lastInvalidCell.col] = 0;
+          return newBoard;
+        });
+        setLastInvalidCell(null);
+      }
       setCurrentTurn(currentTurn);
       setTimer(timer);
     });
@@ -72,9 +80,14 @@ function App() {
     });
 
     // Error handling
-    socket.on("error", ({ message }) => {
+    socket.on("error", ({ message, row, col }) => {
       setError(message);
-      setTimeout(() => setError(""), 3000);
+      // Track invalid cell if coordinates provided
+      if (row !== undefined && col !== undefined) {
+        setLastInvalidCell({ row, col });
+      }
+      // Auto-hide after 5 seconds
+      setTimeout(() => setError(""), 5000);
     });
 
     // Player left
@@ -126,6 +139,8 @@ function App() {
 
   const handleMove = (row, col, value) => {
     socket.emit("player_move", { roomId, row, col, value });
+    // Track this move in case it's invalid
+    setLastInvalidCell({ row, col });
   };
 
   const handleSkipTurn = () => {
@@ -164,26 +179,7 @@ function App() {
         <p className="subtitle">Collaborative Sudoku</p>
       </header>
 
-      {error && (
-        <div className="error-banner">
-          {error}
-          <button
-            className="error-close"
-            onClick={() => setError("")}
-            aria-label="Close notification"
-          >
-            ×
-          </button>
-        </div>
-      )}
-
-      <ConfirmModal
-        isOpen={showStopConfirm}
-        title="Stop Game?"
-        message="Are you sure you want to stop the game? This will end the game for both players."
-        onConfirm={confirmStopGame}
-        onCancel={cancelStopGame}
-      />
+      {error && <div className="error-banner">{error}</div>}
 
       {gameState === "lobby" && (
         <Lobby onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />
