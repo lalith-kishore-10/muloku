@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { socket, connectSocket } from "./socket";
 import Lobby from "./components/Lobby";
 import GameScreen from "./components/GameScreen";
+import ConfirmModal from "./components/ConfirmModal";
 
 function App() {
   const [gameState, setGameState] = useState("lobby"); // 'lobby', 'waiting', 'playing', 'finished'
@@ -14,6 +15,7 @@ function App() {
   const [playerIndex, setPlayerIndex] = useState(-1);
   const [error, setError] = useState("");
   const [gameResult, setGameResult] = useState(null);
+  const [showStopConfirm, setShowStopConfirm] = useState(false);
 
   useEffect(() => {
     connectSocket();
@@ -131,9 +133,16 @@ function App() {
   };
 
   const handleStopGame = () => {
-    if (window.confirm("Are you sure you want to stop the game?")) {
-      socket.emit("stop_game", { roomId });
-    }
+    setShowStopConfirm(true);
+  };
+
+  const confirmStopGame = () => {
+    socket.emit("stop_game", { roomId });
+    setShowStopConfirm(false);
+  };
+
+  const cancelStopGame = () => {
+    setShowStopConfirm(false);
   };
 
   const handlePlayAgain = () => {
@@ -155,7 +164,26 @@ function App() {
         <p className="subtitle">Collaborative Sudoku</p>
       </header>
 
-      {error && <div className="error-banner">{error}</div>}
+      {error && (
+        <div className="error-banner">
+          {error}
+          <button
+            className="error-close"
+            onClick={() => setError("")}
+            aria-label="Close notification"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
+      <ConfirmModal
+        isOpen={showStopConfirm}
+        title="Stop Game?"
+        message="Are you sure you want to stop the game? This will end the game for both players."
+        onConfirm={confirmStopGame}
+        onCancel={cancelStopGame}
+      />
 
       {gameState === "lobby" && (
         <Lobby onCreateRoom={handleCreateRoom} onJoinRoom={handleJoinRoom} />
