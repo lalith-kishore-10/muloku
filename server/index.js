@@ -215,6 +215,10 @@ io.on("connection", (socket) => {
         return;
       }
 
+      // Find the player who stopped the game
+      const stoppingPlayer = room.players.find(p => p.socketId === socket.id);
+      const playerName = stoppingPlayer ? stoppingPlayer.name : "A player";
+
       // Stop the timer
       if (timerIntervals.has(roomId)) {
         clearInterval(timerIntervals.get(roomId));
@@ -225,10 +229,11 @@ io.on("connection", (socket) => {
 
       // Notify both players
       io.to(roomId).emit("game_stopped", {
-        message: "Game stopped by player",
+        message: `Game stopped by ${playerName}`,
+        stoppedBy: playerName,
       });
 
-      console.log(`Game stopped in room: ${roomId}`);
+      console.log(`Game stopped in room: ${roomId} by ${playerName}`);
     } catch (error) {
       socket.emit("error", { message: "Failed to stop game" });
     }

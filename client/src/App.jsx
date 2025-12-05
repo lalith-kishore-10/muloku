@@ -104,7 +104,7 @@ function App() {
     });
 
     // Game stopped
-    socket.on("game_stopped", ({ message }) => {
+    socket.on("game_stopped", ({ message, stoppedBy }) => {
       setError(message);
       setTimeout(() => {
         setGameState("lobby");
