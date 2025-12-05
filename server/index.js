@@ -122,7 +122,7 @@ io.on("connection", (socket) => {
       );
 
       if (!validation.valid) {
-        socket.emit("error", { message: validation.error });
+        socket.emit("error", { message: validation.error, row, col });
         return;
       }
 
