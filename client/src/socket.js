@@ -5,6 +5,8 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "https://5cd0f4f9514f.ngro
 export const socket = io(SOCKET_URL, {
   autoConnect: false,
   withCredentials: true,
+  transports: ["websocket", "polling"],
+  timeout: 10000,
 });
 
 export const connectSocket = () => {
