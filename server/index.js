@@ -18,10 +18,12 @@ const io = new Server(httpServer, {
   },
 });
 
-app.use(cors({
-  origin: CLIENT_URL,
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 const roomManager = new RoomManager();

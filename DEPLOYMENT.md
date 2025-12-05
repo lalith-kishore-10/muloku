@@ -3,6 +3,7 @@
 This guide will help you deploy Muloku online using free hosting services.
 
 ## 📋 Table of Contents
+
 1. [Recommended Setup](#recommended-setup)
 2. [Deploy Backend to Render](#deploy-backend-to-render)
 3. [Deploy Frontend to Vercel](#deploy-frontend-to-vercel)
@@ -18,6 +19,7 @@ This guide will help you deploy Muloku online using free hosting services.
 **Frontend**: Vercel (Free tier)
 
 This combination provides:
+
 - ✅ Free hosting
 - ✅ Automatic deployments
 - ✅ HTTPS by default
@@ -31,6 +33,7 @@ This combination provides:
 ### Step 1: Prepare Your Repository
 
 1. **Initialize Git** (if not already done):
+
    ```bash
    cd f:\Github\Muloku
    git init
@@ -52,11 +55,13 @@ This combination provides:
 1. **Go to [Render.com](https://render.com)** and sign up/login
 
 2. **Create New Web Service**:
+
    - Click "New +" → "Web Service"
    - Connect your GitHub repository
    - Select the `muloku` repository
 
 3. **Configure the Service**:
+
    ```
    Name: muloku-server
    Region: Choose closest to you
@@ -68,6 +73,7 @@ This combination provides:
    ```
 
 4. **Set Environment Variables**:
+
    - Click "Advanced" → "Add Environment Variable"
    - Add:
      ```
@@ -84,6 +90,7 @@ This combination provides:
 ### Step 3: Update Server Package.json
 
 The server `package.json` should have:
+
 ```json
 {
   "scripts": {
@@ -108,11 +115,13 @@ npm install -g vercel
 1. **Go to [Vercel.com](https://vercel.com)** and sign up/login
 
 2. **Import Project**:
+
    - Click "Add New" → "Project"
    - Import your GitHub repository
    - Select `muloku` repository
 
 3. **Configure Project**:
+
    ```
    Framework Preset: Vite
    Root Directory: client
@@ -122,6 +131,7 @@ npm install -g vercel
    ```
 
 4. **Set Environment Variables**:
+
    - Go to "Settings" → "Environment Variables"
    - Add:
      ```
@@ -189,6 +199,7 @@ npm install -g vercel
 ## 🔐 Environment Variables
 
 ### Backend (.env)
+
 ```env
 PORT=3000
 NODE_ENV=production
@@ -196,11 +207,13 @@ CLIENT_URL=https://your-frontend-url.vercel.app
 ```
 
 ### Frontend (.env)
+
 ```env
 VITE_SOCKET_URL=https://your-backend-url.onrender.com
 ```
 
-**Important**: 
+**Important**:
+
 - Never commit `.env` files to Git
 - Use `.env.example` as templates
 - Set environment variables in hosting dashboard
@@ -212,6 +225,7 @@ VITE_SOCKET_URL=https://your-backend-url.onrender.com
 ### Issue: "CORS Error"
 
 **Solution**: Ensure CLIENT_URL matches your frontend URL exactly
+
 ```javascript
 // In Render environment variables
 CLIENT_URL=https://muloku.vercel.app
@@ -219,7 +233,8 @@ CLIENT_URL=https://muloku.vercel.app
 
 ### Issue: "WebSocket Connection Failed"
 
-**Solution**: 
+**Solution**:
+
 1. Check backend is deployed and running
 2. Visit `/health` endpoint: `https://muloku-server.onrender.com/health`
 3. Ensure VITE_SOCKET_URL is set correctly in Vercel
@@ -227,6 +242,7 @@ CLIENT_URL=https://muloku.vercel.app
 ### Issue: "Service Unavailable on Render"
 
 **Solution**: Free tier on Render spins down after 15 minutes of inactivity
+
 - First request may take 30-60 seconds to wake up
 - Consider upgrading to paid tier for always-on service
 - Or deploy backend to Railway (no spin-down on free tier)
@@ -234,6 +250,7 @@ CLIENT_URL=https://muloku.vercel.app
 ### Issue: "Build Failed on Vercel"
 
 **Solution**:
+
 1. Check build logs in Vercel dashboard
 2. Ensure `client/package.json` has correct build script:
    ```json
@@ -246,6 +263,7 @@ CLIENT_URL=https://muloku.vercel.app
 ### Issue: "Environment Variables Not Working"
 
 **Solution**:
+
 1. Redeploy after adding environment variables
 2. For Vercel: Variables must start with `VITE_`
 3. For Render: Restart service after updating
@@ -255,12 +273,14 @@ CLIENT_URL=https://muloku.vercel.app
 ## ✅ Deployment Checklist
 
 ### Before Deploying:
+
 - [ ] Code committed to Git
 - [ ] Repository pushed to GitHub
 - [ ] `.gitignore` includes `node_modules/`, `.env`
 - [ ] Both `package.json` files have correct scripts
 
 ### Backend Deployment:
+
 - [ ] Render account created
 - [ ] Web service created and deployed
 - [ ] Backend URL copied
@@ -268,6 +288,7 @@ CLIENT_URL=https://muloku.vercel.app
 - [ ] Environment variables set
 
 ### Frontend Deployment:
+
 - [ ] Vercel account created
 - [ ] Project imported and deployed
 - [ ] Frontend URL copied
@@ -275,6 +296,7 @@ CLIENT_URL=https://muloku.vercel.app
 - [ ] Site loads in browser
 
 ### Final Steps:
+
 - [ ] Update backend CLIENT_URL with frontend URL
 - [ ] Backend redeployed
 - [ ] Test: Create room on frontend
@@ -296,12 +318,14 @@ CLIENT_URL=https://muloku.vercel.app
 ### Free Tier Limits:
 
 **Render**:
+
 - ✅ 750 hours/month free
 - ✅ Spins down after 15 min inactivity
 - ✅ Unlimited bandwidth
 - ⚠️ 30-60s wake-up time on first request
 
 **Vercel**:
+
 - ✅ 100 GB bandwidth/month
 - ✅ Unlimited deployments
 - ✅ Always on (no spin-down)
@@ -316,6 +340,7 @@ CLIENT_URL=https://muloku.vercel.app
 Both Render and Vercel support automatic deployments:
 
 1. **Push to GitHub**:
+
    ```bash
    git add .
    git commit -m "Update feature"
@@ -332,11 +357,13 @@ Both Render and Vercel support automatic deployments:
 ## 📱 Custom Domain (Optional)
 
 ### For Vercel (Frontend):
+
 1. Go to Project → Settings → Domains
 2. Add your domain (e.g., `muloku.com`)
 3. Update DNS records as instructed
 
 ### For Render (Backend):
+
 1. Go to Service → Settings → Custom Domain
 2. Add your API domain (e.g., `api.muloku.com`)
 3. Update DNS records

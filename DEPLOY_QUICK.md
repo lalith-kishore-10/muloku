@@ -3,6 +3,7 @@
 ## Fastest Way to Deploy Muloku Online
 
 ### Prerequisites
+
 - GitHub account
 - Render account (for backend): https://render.com
 - Vercel account (for frontend): https://vercel.com
@@ -74,6 +75,7 @@ git push -u origin main
 Your game is live at: `https://muloku.vercel.app`
 
 **Test it**:
+
 1. Open the URL
 2. Create a room
 3. Open in another browser/device
@@ -93,6 +95,7 @@ Your game is live at: `https://muloku.vercel.app`
 ## 📖 Full Documentation
 
 See **DEPLOYMENT.md** for:
+
 - Detailed step-by-step guide
 - Alternative deployment options
 - Troubleshooting

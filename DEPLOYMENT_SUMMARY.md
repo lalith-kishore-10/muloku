@@ -5,6 +5,7 @@ Your Muloku project is now ready for deployment. Here's what was configured:
 ## 📦 Files Created
 
 ### Configuration Files
+
 - ✅ `.env.example` - Template for environment variables
 - ✅ `server/.env.example` - Backend environment template
 - ✅ `client/.env.example` - Frontend environment template
@@ -12,11 +13,13 @@ Your Muloku project is now ready for deployment. Here's what was configured:
 - ✅ `render.yaml` - Render deployment configuration
 
 ### Documentation
+
 - ✅ `DEPLOYMENT.md` - Complete deployment guide
 - ✅ `DEPLOY_QUICK.md` - Quick start deployment
 - ✅ `deploy-check.ps1` - Pre-deployment checklist script
 
 ### Code Updates
+
 - ✅ Server CORS configured for production (uses CLIENT_URL env var)
 - ✅ Client socket configured for production (uses VITE_SOCKET_URL env var)
 - ✅ Git repository initialized
@@ -100,10 +103,12 @@ git push -u origin main
 ## 🎉 You're Live!
 
 Your game is now deployed at:
+
 - **Frontend**: `https://muloku-xxxx.vercel.app`
 - **Backend**: `https://muloku-server-xxxx.onrender.com`
 
 ### Test It:
+
 1. Open your Vercel URL
 2. Create a room
 3. Share the link with a friend (or open in incognito)
@@ -115,6 +120,7 @@ Your game is now deployed at:
 ## 📊 What You Get (Free!)
 
 ### Render (Backend)
+
 - ✅ 750 hours/month free
 - ✅ WebSocket support
 - ✅ Automatic HTTPS
@@ -122,6 +128,7 @@ Your game is now deployed at:
 - ⚠️ Spins down after 15 min (30-60s wake time)
 
 ### Vercel (Frontend)
+
 - ✅ Unlimited deployments
 - ✅ 100GB bandwidth/month
 - ✅ Automatic HTTPS
@@ -144,6 +151,7 @@ git push
 ```
 
 Both Render and Vercel will automatically:
+
 - Pull the latest code
 - Rebuild
 - Deploy
@@ -154,16 +162,20 @@ Both Render and Vercel will automatically:
 ## 🆘 Troubleshooting
 
 ### Problem: CORS error when connecting
+
 **Fix**: Make sure `CLIENT_URL` in Render exactly matches your Vercel URL
 
 ### Problem: WebSocket connection fails
+
 **Fix**: Check that `VITE_SOCKET_URL` in Vercel points to your Render backend URL
 
 ### Problem: Backend is slow on first request
+
 **Reason**: Free tier on Render spins down after inactivity
 **Solution**: Wait 30-60 seconds on first request, or upgrade to paid tier ($7/month)
 
 ### Problem: Build fails on Vercel
+
 **Fix**: Check build logs, ensure all dependencies are in `package.json`
 
 ---
@@ -181,8 +193,8 @@ Both Render and Vercel will automatically:
 1. **Custom Domain** (Optional):
    - Add your domain in Vercel settings
    - Add subdomain for API in Render settings
-   
 2. **Monitoring**:
+
    - Check Render dashboard for backend health
    - Check Vercel analytics for traffic stats
 
@@ -207,5 +219,5 @@ Share it with friends and enjoy playing collaborative Sudoku together!
 
 ---
 
-*Created: November 24, 2025*
-*Project: Muloku - Collaborative Sudoku Game*
+_Created: November 24, 2025_
+_Project: Muloku - Collaborative Sudoku Game_
