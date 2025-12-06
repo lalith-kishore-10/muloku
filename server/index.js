@@ -38,11 +38,12 @@ io.on("connection", (socket) => {
   console.log(`Player connected: ${socket.id}`);
 
   // Create a new room
-  socket.on("create_room", ({ playerName }) => {
+  socket.on("create_room", ({ playerName, timerDuration }) => {
     try {
       const { roomId, room } = roomManager.createRoom(
         socket.id,
-        playerName || "Player 1"
+        playerName || "Player 1",
+        timerDuration
       );
       socket.join(roomId);
 
@@ -216,7 +217,7 @@ io.on("connection", (socket) => {
       }
 
       // Find the player who stopped the game
-      const stoppingPlayer = room.players.find(p => p.socketId === socket.id);
+      const stoppingPlayer = room.players.find((p) => p.socketId === socket.id);
       const playerName = stoppingPlayer ? stoppingPlayer.name : "A player";
 
       // Stop the timer
@@ -249,7 +250,8 @@ io.on("connection", (socket) => {
         return;
       }
 
-      const isCreator = room.players.length === 1 && room.players[0].socketId === socket.id;
+      const isCreator =
+        room.players.length === 1 && room.players[0].socketId === socket.id;
       const notStarted = !room.gameStarted;
 
       if (isCreator && notStarted) {
@@ -262,7 +264,9 @@ io.on("connection", (socket) => {
         // Remove creator player and delete room if empty
         roomManager.removePlayer(socket.id);
         socket.leave(roomId);
-        socket.emit("matchmaking_canceled", { message: "Matchmaking canceled" });
+        socket.emit("matchmaking_canceled", {
+          message: "Matchmaking canceled",
+        });
         console.log(`Matchmaking canceled for room: ${roomId}`);
       } else {
         socket.emit("error", { message: "Cannot cancel after game starts" });

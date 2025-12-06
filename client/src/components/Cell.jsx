@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Cell({ cell, row, col, isMyTurn, onCellChange, isHighlighted }) {
   const [inputValue, setInputValue] = useState("");
+
+  // Sync inputValue when cell value changes from server
+  useEffect(() => {
+    if (!cell.isLocked && cell.value === 0) {
+      setInputValue("");
+    }
+  }, [cell.value, cell.isLocked]);
 
   const handleClick = () => {
     if (!cell.isLocked && isMyTurn) {
@@ -16,8 +23,9 @@ function Cell({ cell, row, col, isMyTurn, onCellChange, isHighlighted }) {
 
     // Only allow numbers 1-9 or empty
     if (value === "" || /^[1-9]$/.test(value)) {
+      const numValue = value === "" ? 0 : parseInt(value);
       setInputValue(value);
-      onCellChange(row, col, value === "" ? 0 : parseInt(value));
+      onCellChange(row, col, numValue);
     }
   };
 

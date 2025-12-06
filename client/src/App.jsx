@@ -57,7 +57,7 @@ function App() {
 
     // Turn changed
     socket.on("turn_changed", ({ currentTurn, timer }) => {
-      // Clear invalid cell from previous turn
+      // Clear invalid cell from previous turn if marked
       if (lastInvalidCell) {
         setBoard((prevBoard) => {
           const newBoard = prevBoard.map((row) => [...row]);
@@ -159,8 +159,6 @@ function App() {
 
   const handleMove = (row, col, value) => {
     socket.emit("player_move", { roomId, row, col, value });
-    // Track this move in case it's invalid
-    setLastInvalidCell({ row, col });
   };
 
   const handleSkipTurn = () => {
@@ -246,7 +244,10 @@ function App() {
           <p>Waiting for another player to join...</p>
           <div className="spinner"></div>
           <div className="waiting-actions">
-            <button className="btn btn-secondary" onClick={handleCancelMatchmaking}>
+            <button
+              className="btn btn-secondary"
+              onClick={handleCancelMatchmaking}
+            >
               Cancel Matchmaking
             </button>
           </div>
