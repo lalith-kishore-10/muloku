@@ -239,6 +239,39 @@ io.on("connection", (socket) => {
     }
   });
 
+  // Cancel matchmaking (creator leaves before game starts)
+  socket.on("cancel_room", ({ roomId }) => {
+    try {
+      const room = roomManager.getRoom(roomId);
+
+      if (!room) {
+        socket.emit("error", { message: "Room not found" });
+        return;
+      }
+
+      const isCreator = room.players.length === 1 && room.players[0].socketId === socket.id;
+      const notStarted = !room.gameStarted;
+
+      if (isCreator && notStarted) {
+        // Clear any running timer
+        if (timerIntervals.has(roomId)) {
+          clearInterval(timerIntervals.get(roomId));
+          timerIntervals.delete(roomId);
+        }
+
+        // Remove creator player and delete room if empty
+        roomManager.removePlayer(socket.id);
+        socket.leave(roomId);
+        socket.emit("matchmaking_canceled", { message: "Matchmaking canceled" });
+        console.log(`Matchmaking canceled for room: ${roomId}`);
+      } else {
+        socket.emit("error", { message: "Cannot cancel after game starts" });
+      }
+    } catch (error) {
+      socket.emit("error", { message: "Failed to cancel matchmaking" });
+    }
+  });
+
   // Handle disconnect
   socket.on("disconnect", () => {
     console.log(`Player disconnected: ${socket.id}`);

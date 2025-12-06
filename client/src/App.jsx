@@ -103,6 +103,19 @@ function App() {
       }, 2000);
     });
 
+    // Matchmaking canceled by creator
+    socket.on("matchmaking_canceled", ({ message }) => {
+      if (message) setError(message);
+      setGameState("lobby");
+      setRoomId("");
+      setPlayers([]);
+      setBoard([]);
+      setCurrentTurn(0);
+      setTimer(45);
+      setTimerDuration(45);
+      setPlayerIndex(-1);
+    });
+
     // Game stopped
     socket.on("game_stopped", ({ message, stoppedBy }) => {
       setError(message);
@@ -127,6 +140,7 @@ function App() {
       socket.off("game_over");
       socket.off("error");
       socket.off("player_left");
+      socket.off("matchmaking_canceled");
       socket.off("game_stopped");
     };
   }, []);
@@ -137,6 +151,10 @@ function App() {
 
   const handleJoinRoom = (roomId, playerName) => {
     socket.emit("join_room", { roomId, playerName });
+  };
+
+  const handleCancelMatchmaking = () => {
+    socket.emit("cancel_room", { roomId });
   };
 
   const handleMove = (row, col, value) => {
@@ -227,6 +245,11 @@ function App() {
           </div>
           <p>Waiting for another player to join...</p>
           <div className="spinner"></div>
+          <div className="waiting-actions">
+            <button className="btn btn-secondary" onClick={handleCancelMatchmaking}>
+              Cancel Matchmaking
+            </button>
+          </div>
         </div>
       )}
 
