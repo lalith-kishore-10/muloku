@@ -145,6 +145,18 @@ body {
   gap: 15px;
 }
 
+.lobby-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.lobby-footer small {
+  font-size: 0.875rem;
+}
+
 /* Forms */
 .form-group {
   margin-bottom: 20px;

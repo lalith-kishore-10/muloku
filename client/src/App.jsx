@@ -77,8 +77,10 @@ function App() {
 
     // Game over
     socket.on("game_over", ({ message, timeSpent }) => {
+      console.log("🎉 Received game_over event:", { message, timeSpent });
       setGameResult({ message, timeSpent });
       setGameState("finished");
+      console.log("Game state set to finished");
     });
 
     // Error handling
@@ -209,18 +211,6 @@ function App() {
           </button>
         </div>
       )}
-      {error && (
-        <div className="error-banner">
-          {error}
-          <button
-            className="error-close"
-            onClick={() => setError("")}
-            aria-label="Close notification"
-          >
-            ×
-          </button>
-        </div>
-      )}
 
       <ConfirmModal
         isOpen={showStopConfirm}
@@ -289,6 +279,7 @@ function App() {
           </button>
         </div>
       )}
+      {console.log("Debug - gameState:", gameState, "gameResult:", gameResult)}
     </div>
   );
 }

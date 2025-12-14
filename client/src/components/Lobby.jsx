@@ -44,6 +44,9 @@ function Lobby({ onCreateRoom, onJoinRoom }) {
               Join Room
             </button>
           </div>
+          <footer className="lobby-footer">
+            <small>Made by Lalith Kishore.N.S</small>
+          </footer>
         </div>
       </div>
     );
@@ -80,6 +83,9 @@ function Lobby({ onCreateRoom, onJoinRoom }) {
               </button>
             </div>
           </form>
+          <footer className="lobby-footer">
+            <small>Made by Lalith Kishore.N.S</small>
+          </footer>
         </div>
       </div>
     );
@@ -128,6 +134,9 @@ function Lobby({ onCreateRoom, onJoinRoom }) {
               </button>
             </div>
           </form>
+          <footer className="lobby-footer">
+            <small>Made by Lalith Kishore.N.S</small>
+          </footer>
         </div>
       </div>
     );

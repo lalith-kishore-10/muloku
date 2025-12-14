@@ -60,21 +60,30 @@ export class SudokuValidator {
 
   // Check if the puzzle is completely solved
   static isPuzzleSolved(board) {
+    let emptyCells = 0;
+    let incorrectCells = 0;
+
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         const cell = board[row][col];
 
         // Check if any cell is empty
         if (cell.value === 0) {
-          return false;
+          emptyCells++;
         }
 
         // Check if value matches solution
-        if (cell.value !== cell.solution) {
-          return false;
+        if (cell.value !== 0 && cell.value !== cell.solution) {
+          incorrectCells++;
         }
       }
     }
-    return true;
+
+    const isSolved = emptyCells === 0 && incorrectCells === 0;
+    console.log(
+      `Puzzle check: emptyCells=${emptyCells}, incorrectCells=${incorrectCells}, solved=${isSolved}`
+    );
+
+    return isSolved;
   }
 }

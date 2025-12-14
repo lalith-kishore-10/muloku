@@ -129,6 +129,7 @@ io.on("connection", (socket) => {
 
       // Update the board
       roomManager.updateBoard(roomId, row, col, value);
+      console.log(`Board updated: [${row},${col}] = ${value}`);
 
       // Broadcast the updated grid
       io.to(roomId).emit("grid_update", {
@@ -149,6 +150,9 @@ io.on("connection", (socket) => {
           timerIntervals.delete(roomId);
         }
 
+        console.log(
+          `✅ Game completed in room: ${roomId}, emitting game_over event`
+        );
         io.to(roomId).emit("game_over", {
           message: "Puzzle Completed Together!",
           timeSpent,
