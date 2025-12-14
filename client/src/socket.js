@@ -1,13 +1,16 @@
 import { io } from "socket.io-client";
 
 const SOCKET_URL =
-  import.meta.env.VITE_SOCKET_URL || "https://muloku.netlify.app";
+  import.meta.env.VITE_SOCKET_URL || "http://localhost:3000";
 
 export const socket = io(SOCKET_URL, {
   autoConnect: false,
   withCredentials: true,
   transports: ["websocket", "polling"],
   timeout: 10000,
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000,
 });
 
 export const connectSocket = () => {

@@ -21,6 +21,24 @@ function App() {
   useEffect(() => {
     connectSocket();
 
+    // Connection error handling
+    socket.on("connect_error", (error) => {
+      console.error("Connection error:", error);
+      setError("Connection lost. Please check your server.");
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("Disconnected:", reason);
+      if (reason === "io server disconnect") {
+        // Server disconnected, try reconnecting
+        socket.connect();
+      }
+    });
+
+    socket.on("reconnect", (attemptNumber) => {
+      console.log("Reconnected after", attemptNumber, "attempts");
+    });
+
     // Room created
     socket.on("room_created", ({ roomId, players, board, timerDuration }) => {
       setRoomId(roomId);
@@ -134,6 +152,9 @@ function App() {
     });
 
     return () => {
+      socket.off("connect_error");
+      socket.off("disconnect");
+      socket.off("reconnect");
       socket.off("room_created");
       socket.off("start_game");
       socket.off("grid_update");
